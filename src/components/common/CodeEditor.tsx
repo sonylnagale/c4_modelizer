@@ -1,5 +1,5 @@
 import { ColorStyle } from "@theme/theme";
-import { Box, FormLabel, SxProps, TextField, Theme } from "@mui/material";
+import { Box, FormLabel, SxProps, TextField, Theme, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -67,6 +67,7 @@ const CodeEditor = ({
   sx = {},
 }: CodeEditorProps) => {
   const { t } = useTranslation();
+  const muiTheme = useTheme();
   const [editorValue, setEditorValue] = useState(value || "");
   const [isEditing, setIsEditing] = useState(false);
 
@@ -80,11 +81,13 @@ const CodeEditor = ({
     onChange(newValue);
   };
 
-  const customStyle = createSyntaxHighlighterStyle(theme);
+  const customStyle = createSyntaxHighlighterStyle(theme, muiTheme);
 
   return (
     <Box sx={getEditorContainerStyles(sx)}>
-      {label && <FormLabel sx={getFormLabelStyles(theme)}>{label}</FormLabel>}
+      {label && (
+        <FormLabel sx={getFormLabelStyles(theme, muiTheme)}>{label}</FormLabel>
+      )}
 
       {isEditing ? (
         <TextField
@@ -97,7 +100,7 @@ const CodeEditor = ({
           onBlur={() => setIsEditing(false)}
           data-testid="input_code"
           autoFocus
-          sx={getTextFieldStyles(theme)}
+          sx={getTextFieldStyles(theme, muiTheme)}
         />
       ) : (
         <Box
@@ -116,7 +119,10 @@ const CodeEditor = ({
               {editorValue}
             </SyntaxHighlighter>
           ) : (
-            <Box data-testid="input_code" sx={getPlaceholderBoxStyles(theme)}>
+            <Box
+              data-testid="input_code"
+              sx={getPlaceholderBoxStyles(theme, muiTheme)}
+            >
               {placeholder || t("enter_code_here")}
             </Box>
           )}

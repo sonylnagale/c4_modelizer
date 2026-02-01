@@ -1,6 +1,6 @@
 import SelectionIcon from "@mui/icons-material/HighlightAlt";
 import PanToolIcon from "@mui/icons-material/PanTool";
-import { Box } from "@mui/material";
+import { alpha, Box, useTheme } from "@mui/material";
 import { styled } from "@mui/system";
 import {
   Background,
@@ -30,10 +30,10 @@ import ContainerBlock from "./container/ContainerBlock";
 import SystemBlock from "./system/SystemBlock";
 import TechnologyEdge from "./TechnologyEdge";
 
-const FlowCanvasContainer = styled(Box)(() => ({
+const FlowCanvasContainer = styled(Box)(({ theme }) => ({
   width: "100vw",
   height: "calc(100vh - 100px)",
-  backgroundColor: "#0a1929",
+  backgroundColor: theme.palette.background.default,
 }));
 
 const StyledReactFlow = styled(ReactFlow)(() => ({
@@ -41,33 +41,11 @@ const StyledReactFlow = styled(ReactFlow)(() => ({
   height: "100%",
 }));
 
-const StyledBackground = styled(Background)(() => ({
+const StyledBackground = styled(Background)(({ theme }) => ({
   "& .react-flow__background-dots": {
-    color: "rgba(81, 162, 255, 0.2)",
+    color: alpha(theme.palette.primary.main, 0.2),
   },
 }));
-
-const defaultEdgeStyle = {
-  animated: true,
-  markerEnd: {
-    type: MarkerType.ArrowClosed,
-    width: 18,
-    height: 18,
-    color: "#51a2ff",
-  },
-  markerStart: {
-    type: MarkerType.ArrowClosed,
-    width: 18,
-    height: 18,
-    color: "#51a2ff",
-  },
-  style: {
-    strokeWidth: 1.5,
-    stroke: "#51a2ff",
-    opacity: 0.8,
-    filter: "drop-shadow(0 0 5px rgba(81, 162, 255, 0.5))",
-  },
-};
 
 interface FlowCanvasProps {
   nodes: Node[];
@@ -127,6 +105,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
   onEdgeClick,
 }) => {
   const [isSelectionMode, setIsSelectionMode] = useState(true);
+  const muiTheme = useTheme();
   const { setPendingConnection } = useDialogs();
   const { getBlockById } = useFlatStore();
   const { removeSystem, removeContainer, removeComponent, removeCodeElement } =
@@ -155,6 +134,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
 
   const handleNodeDoubleClick = useCallback(
     (event: React.MouseEvent, node: Node) => {
+      console.log("Node double clicked:", node.id,event.target);
       event.preventDefault();
 
       if (onNodeDoubleClick) {
@@ -182,7 +162,28 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
     [removeCodeElement, removeComponent, removeContainer, removeSystem]
   );
 
-  const defaultEdgeOptions = defaultEdgeStyle;
+  const edgeColor = muiTheme.palette.primary.main;
+  const defaultEdgeOptions = {
+    animated: true,
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 18,
+      height: 18,
+      color: edgeColor,
+    },
+    markerStart: {
+      type: MarkerType.ArrowClosed,
+      width: 18,
+      height: 18,
+      color: edgeColor,
+    },
+    style: {
+      strokeWidth: 1.5,
+      stroke: edgeColor,
+      opacity: 0.8,
+      filter: `drop-shadow(0 0 5px ${alpha(edgeColor, 0.5)})`,
+    },
+  };
 
   const preparedEdges = edges.map((edge) => {
     const technologyId = (edge.data &&

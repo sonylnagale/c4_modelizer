@@ -1,10 +1,12 @@
-import { IconButton, styled } from "@mui/material";
+import { alpha, IconButton, styled } from "@mui/material";
 
-export const ToolbarIconButton = styled(IconButton)(() => ({
-  color: "#fff",
-  background: "rgba(81, 162, 255, 0.1)",
+export const ToolbarIconButton = styled(IconButton)(({ theme }) => ({
+  color: theme.palette.text.primary,
+  background: alpha(theme.palette.primary.main, theme.palette.mode === "dark" ? 0.12 : 0.08),
   backdropFilter: "blur(4px)",
   marginRight: 8,
   transition: "all 0.2s ease",
-  "&:hover": { background: "rgba(81, 162, 255, 0.2)" },
+  "&:hover": {
+    background: alpha(theme.palette.primary.main, theme.palette.mode === "dark" ? 0.22 : 0.14),
+  },
 }));

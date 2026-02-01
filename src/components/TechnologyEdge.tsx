@@ -1,6 +1,7 @@
 import { BaseBlock } from "@archivisio/c4-modelizer-sdk";
 import TechnologyIcon from "@components/TechnologyIcon";
 import { getTechnologyById, Technology } from "@data/technologies";
+import { alpha } from "@mui/material";
 import { styled } from "@mui/system";
 import {
   BaseEdge,
@@ -24,20 +25,23 @@ const EdgeLabelContainer = styled("div")(() => ({
   zIndex: 1,
 }));
 
-const EdgeLabel = styled("span")(() => ({
+const EdgeLabel = styled("span")(({ theme }) => ({
   marginTop: 2,
-  background: "rgba(255,255,255,0.95)",
+  background: alpha(theme.palette.background.paper, 0.95),
   borderRadius: 4,
   padding: "1px 6px",
   fontSize: 12,
   fontWeight: 500,
-  color: "#333",
-  boxShadow: "0 1px 4px rgba(0,0,0,0.07)",
-  whiteSpace: "nowrap",
-  maxWidth: 70,
+  color: theme.palette.text.primary,
+  boxShadow:
+    theme.palette.mode === "dark"
+      ? "0 1px 4px rgba(0,0,0,0.4)"
+      : "0 1px 4px rgba(0,0,0,0.12)",
+  whiteSpace: "wrap",
+  maxWidth: 75,
   overflow: "hidden",
   textOverflow: "ellipsis",
-  border: "1px solid #eee",
+  border: `1px solid ${alpha(theme.palette.text.primary, 0.12)}`,
 }));
 
 const createEdgeStyle = (

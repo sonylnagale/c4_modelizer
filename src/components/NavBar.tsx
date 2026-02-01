@@ -1,36 +1,36 @@
 import PortalTarget from "@slots/PortalTarget";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import { Box, Breadcrumbs, Link } from "@mui/material";
+import { alpha, Box, Breadcrumbs, Link } from "@mui/material";
 import { styled } from "@mui/system";
 import { useReactFlow } from "@xyflow/react";
 import { useFlatC4Store, useFlatNavigation } from "@archivisio/c4-modelizer-sdk";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-const NavBarContainer = styled(Box)(() => ({
+const NavBarContainer = styled(Box)(({ theme }) => ({
   padding: 12,
-  backgroundColor: "#132f4c",
-  borderBottom: "1px solid rgba(81, 162, 255, 0.2)",
+  backgroundColor: alpha(theme.palette.background.paper, 0.9),
+  borderBottom: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
   backdropFilter: "blur(8px)",
   display: "flex",
 }));
 
-const StyledNavigateNextIcon = styled(NavigateNextIcon)(() => ({
-  color: "#51a2ff",
+const StyledNavigateNextIcon = styled(NavigateNextIcon)(({ theme }) => ({
+  color: theme.palette.primary.main,
   fontSize: "small",
 }));
 
-const StyledLink = styled(Link)(() => ({
+const StyledLink = styled(Link)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   fontWeight: 500,
   transition: "all 0.2s ease",
-  color: "rgba(255, 255, 255, 0.7)",
+  color: theme.palette.text.secondary,
   "&:hover": {
-    color: "#51a2ff",
+    color: theme.palette.primary.main,
   },
   "&.active": {
-    color: "#51a2ff",
+    color: theme.palette.primary.main,
   },
 }));
 

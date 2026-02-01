@@ -1,7 +1,7 @@
 import { ColorStyle } from "@theme/theme";
 import type { CodeBlock as CodeBlockType, NodeData } from "@archivisio/c4-modelizer-sdk";
 import C4Block from "@components/common/C4Block";
-import { Box, Chip, useTheme } from "@mui/material";
+import { alpha, Box, Chip, useTheme } from "@mui/material";
 import { Position } from "@xyflow/react";
 import { memo } from "react";
 
@@ -67,9 +67,12 @@ const CodeBlock: React.FC<NodeData<CodeBlockType>> = memo(
             label={typedData.codeType}
             sx={{
               borderColor: getChipBorderColor(),
-              color: "#fff",
+              color: theme.palette.text.primary,
               fontWeight: "medium",
-              backgroundColor: "rgba(0,0,0,0.2)",
+              backgroundColor: alpha(
+                theme.palette.background.default,
+                theme.palette.mode === "dark" ? 0.35 : 0.6
+              ),
               backdropFilter: "blur(4px)",
               "& .MuiChip-label": { px: 1.5 },
               position: "absolute",

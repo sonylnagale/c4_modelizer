@@ -37,13 +37,22 @@ export interface C4BlockProps {
   children?: React.ReactNode;
 }
 
-const createHandleStyle = (colorStyles: ColorStyle, isSource = false) => ({
-  background: colorStyles.border,
-  border: `2px solid ${colorStyles.border}`,
-  width: 6,
-  height: 6,
-  ...(isSource && { boxShadow: `0 0 5px ${colorStyles.border}` }),
-});
+const createHandleStyle = (
+  colorStyles: ColorStyle,
+  muiTheme: ReturnType<typeof useTheme>,
+  isSource = false
+) => {
+  const handleColor =
+    muiTheme.palette.mode === "light" ? "rgba(0,0,0,0.7)" : colorStyles.border;
+
+  return {
+    background: handleColor,
+    border: `2px solid ${handleColor}`,
+    width: 6,
+    height: 6,
+    ...(isSource && { boxShadow: `0 0 5px ${handleColor}` }),
+  };
+};
 
 const C4Block: React.FC<C4BlockProps> = ({
   item,
@@ -97,7 +106,7 @@ const C4Block: React.FC<C4BlockProps> = ({
             position={position}
             data-testid={`target-${position}-${index}`}
             id={`target-${position}-${index}`}
-            style={createHandleStyle(colorStyles)}
+            style={createHandleStyle(colorStyles, theme)}
           />
         ))
       ) : (
@@ -106,7 +115,7 @@ const C4Block: React.FC<C4BlockProps> = ({
           position={handlePositions.target}
           data-testid={`target-${handlePositions.target}`}
           id={`target-${handlePositions.target}`}
-          style={createHandleStyle(colorStyles)}
+          style={createHandleStyle(colorStyles, theme)}
         />
       )}
       <BlockContainer sx={{ opacity: item.original ? 0.5 : 1 }}>
@@ -217,7 +226,7 @@ const C4Block: React.FC<C4BlockProps> = ({
             position={position}
             data-testid={`source-${position}-${index}`}
             id={`source-${position}-${index}`}
-            style={createHandleStyle(colorStyles, true)}
+            style={createHandleStyle(colorStyles, theme, true)}
           />
         ))
       ) : (
@@ -226,7 +235,7 @@ const C4Block: React.FC<C4BlockProps> = ({
           position={handlePositions.source}
           id={`source-${handlePositions.source}`}
           data-testid={`source-${handlePositions.source}`}
-          style={createHandleStyle(colorStyles, true)}
+          style={createHandleStyle(colorStyles, theme, true)}
         />
       )}
     </>

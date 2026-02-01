@@ -110,6 +110,7 @@ function App() {
   };
 
   const handleNodeDoubleClick = (nodeId: string) => {
+    console.log(nodeId, "double clicked");
     const block = getBlockById(nodeId);
     if (block?.original) {
       return handleCloneDoubleClick(block);
@@ -142,7 +143,7 @@ function App() {
 
   return (
     <ReactFlowProvider>
-      <Box sx={{ height: "100vh", bgcolor: "#0a1929", color: "#fff" }}>
+      <Box sx={{ height: "100vh", bgcolor: "background.default", color: "text.primary" }}>
         <ToolbarSlot
           onAddSystem={handleAddElement}
           onExport={handleExport}

@@ -1,7 +1,7 @@
 import { ColorStyle } from "@theme/theme";
-import { SxProps, Theme } from "@mui/material";
+import { alpha, SxProps, Theme } from "@mui/material";
 import { CSSProperties } from "react";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { oneLight, vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 export const getEditorContainerStyles = (
   sx: SxProps<Theme> = {}
@@ -10,8 +10,11 @@ export const getEditorContainerStyles = (
   ...sx,
 });
 
-export const getFormLabelStyles = (theme: ColorStyle): SxProps<Theme> => ({
-  color: "rgba(255, 255, 255, 0.7)",
+export const getFormLabelStyles = (
+  theme: ColorStyle,
+  muiTheme: Theme
+): SxProps<Theme> => ({
+  color: muiTheme.palette.text.secondary,
   mb: 1,
   display: "block",
   "&.Mui-focused": {
@@ -19,7 +22,10 @@ export const getFormLabelStyles = (theme: ColorStyle): SxProps<Theme> => ({
   },
 });
 
-export const getTextFieldStyles = (theme: ColorStyle): SxProps<Theme> => ({
+export const getTextFieldStyles = (
+  theme: ColorStyle,
+  muiTheme: Theme
+): SxProps<Theme> => ({
   fontFamily: '"Fira Code", "Roboto Mono", monospace',
   "& .MuiOutlinedInput-root": {
     "& fieldset": { borderColor: `rgba(${theme.primaryColor}, 0.3)` },
@@ -28,12 +34,15 @@ export const getTextFieldStyles = (theme: ColorStyle): SxProps<Theme> => ({
     },
     "&.Mui-focused fieldset": { borderColor: theme.gradientStart },
   },
-  "& .MuiInputLabel-root": { color: "rgba(255, 255, 255, 0.7)" },
+  "& .MuiInputLabel-root": { color: muiTheme.palette.text.secondary },
   "& .MuiInputLabel-root.Mui-focused": { color: theme.gradientEnd },
   "& .MuiInputBase-input": {
-    color: "#fff",
+    color: muiTheme.palette.text.primary,
     fontFamily: '"Fira Code", "Roboto Mono", monospace',
-    backgroundColor: "rgba(0, 0, 0, 0.2)",
+    backgroundColor: alpha(
+      muiTheme.palette.background.default,
+      muiTheme.palette.mode === "dark" ? 0.4 : 0.6
+    ),
     borderRadius: "4px",
   },
 });
@@ -42,12 +51,18 @@ export const getEditorClickableBoxStyles = (): SxProps<Theme> => ({
   cursor: "pointer",
 });
 
-export const getPlaceholderBoxStyles = (theme: ColorStyle): SxProps<Theme> => ({
-  backgroundColor: "rgba(0, 0, 0, 0.2)",
+export const getPlaceholderBoxStyles = (
+  theme: ColorStyle,
+  muiTheme: Theme
+): SxProps<Theme> => ({
+  backgroundColor: alpha(
+    muiTheme.palette.background.default,
+    muiTheme.palette.mode === "dark" ? 0.3 : 0.6
+  ),
   border: `1px solid rgba(${theme.primaryColor}, 0.3)`,
   borderRadius: "4px",
   padding: "12px",
-  color: "rgba(255, 255, 255, 0.5)",
+  color: muiTheme.palette.text.secondary,
   fontStyle: "italic",
   minHeight: "200px",
   display: "flex",
@@ -56,14 +71,22 @@ export const getPlaceholderBoxStyles = (theme: ColorStyle): SxProps<Theme> => ({
 });
 
 export const createSyntaxHighlighterStyle = (
-  theme: ColorStyle
+  theme: ColorStyle,
+  muiTheme: Theme
 ): { [key: string]: CSSProperties } => ({
-  ...vscDarkPlus,
+  ...(muiTheme.palette.mode === "dark" ? vscDarkPlus : oneLight),
   'pre[class*="language-"]': {
-    ...vscDarkPlus['pre[class*="language-"]'],
+    ...(
+      (muiTheme.palette.mode === "dark" ? vscDarkPlus : oneLight)[
+        'pre[class*="language-"]'
+      ]
+    ),
     margin: 0,
     padding: "12px",
-    backgroundColor: "rgba(0, 0, 0, 0.2)",
+    backgroundColor: alpha(
+      muiTheme.palette.background.default,
+      muiTheme.palette.mode === "dark" ? 0.3 : 0.6
+    ),
     border: `1px solid rgba(${theme.primaryColor}, 0.3)`,
     borderRadius: "4px",
     cursor: "pointer",

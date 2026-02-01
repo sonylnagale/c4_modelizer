@@ -64,7 +64,7 @@ export default function BaseEditDialog({
       maxWidth="md"
       fullWidth
       PaperProps={{
-        sx: createDialogPaperStyles(themeColor),
+        sx: createDialogPaperStyles(themeColor, theme),
       }}
     >
       <StyledDialogTitle sx={createDialogTitleStyles(themeColor)}>
@@ -94,7 +94,7 @@ export default function BaseEditDialog({
           onClick={onSave}
           variant="contained"
           disabled={saveDisabled}
-          sx={createSaveButtonStyles(themeColor)}
+          sx={createSaveButtonStyles(themeColor, theme)}
         >
           {t("save")}
         </SaveButton>

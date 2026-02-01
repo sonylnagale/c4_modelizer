@@ -22,21 +22,21 @@ const TechColorDot = styled(Box)<{ bgcolor: string }>(({ bgcolor }) => ({
   boxShadow: `0 0 5px ${bgcolor}80`,
 }));
 
-const TechOptionText = styled(Typography)(() => ({
-  color: "#0a1929",
+const TechOptionText = styled(Typography)(({ theme }) => ({
+  color: theme.palette.text.primary,
 }));
 
 const StyledTextField = styled(TextField)<{ colors: TechColorProps }>(
-  ({ colors }) => ({
+  ({ colors, theme }) => ({
     "& .MuiOutlinedInput-root": {
       "& fieldset": { borderColor: colors.border },
       "&:hover fieldset": { borderColor: colors.borderHover },
       "&.Mui-focused fieldset": { borderColor: colors.borderFocus },
     },
-    "& .MuiInputLabel-root": { color: "rgba(255, 255, 255, 0.7)" },
+    "& .MuiInputLabel-root": { color: theme.palette.text.secondary },
     "& .MuiInputLabel-root.Mui-focused": { color: colors.labelFocus },
-    "& .MuiInputBase-input": { color: "#fff" },
-    "& .MuiSvgIcon-root": { color: "rgba(255, 255, 255, 0.7)" },
+    "& .MuiInputBase-input": { color: theme.palette.text.primary },
+    "& .MuiSvgIcon-root": { color: theme.palette.text.secondary },
   })
 );
 

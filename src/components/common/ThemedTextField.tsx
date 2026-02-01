@@ -27,10 +27,10 @@ export default function ThemedTextField({
           "&:hover fieldset": { borderColor: `${borderColor}80` }, // 50% opacity
           "&.Mui-focused fieldset": { borderColor: borderColor },
         },
-        "& .MuiInputLabel-root": { color: "rgba(255, 255, 255, 0.7)" },
+        "& .MuiInputLabel-root": { color: theme.palette.text.secondary },
         "& .MuiInputLabel-root.Mui-focused": { color: hoverColor },
-        "& .MuiInputBase-input": { color: "#fff" },
-        "& .MuiSelect-icon": { color: "rgba(255, 255, 255, 0.9)" },
+        "& .MuiInputBase-input": { color: theme.palette.text.primary },
+        "& .MuiSelect-icon": { color: theme.palette.text.secondary },
         ...sx,
       }}
     />

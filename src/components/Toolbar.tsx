@@ -1,29 +1,47 @@
 import { FlatC4Model } from "@archivisio/c4-modelizer-sdk";
 import { ToolbarIconButton } from "@components/common/ToolbarIconButton";
 import AddIcon from "@mui/icons-material/Add";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
+import LightModeIcon from "@mui/icons-material/LightMode";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import {
+  alpha,
   AppBar,
+  Box,
+  Switch,
   Toolbar as MuiToolbar,
   Tooltip,
   Typography,
+  useTheme,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import PortalTarget from "@slots/PortalTarget";
+import { useThemeMode } from "@contexts/ThemeModeContext";
 import React, { forwardRef, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
-const StyledAppBar = styled(AppBar)(() => ({
-  background: "linear-gradient(90deg, #051937 0%, #004d7a 100%)",
-  borderBottom: "1px solid rgba(81, 162, 255, 0.2)",
+const StyledAppBar = styled(AppBar)(({ theme }) => ({
+  background:
+    theme.palette.mode === "dark"
+      ? "linear-gradient(90deg, #051937 0%, #004d7a 100%)"
+      : `linear-gradient(90deg, ${alpha(
+          theme.palette.primary.main,
+          0.08
+        )} 0%, ${alpha(theme.palette.primary.light, 0.18)} 100%)`,
+  borderBottom: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
 }));
 
-const AppTitle = styled(Typography)(() => ({
+const AppTitle = styled(Typography)(({ theme }) => ({
   flexGrow: 1,
   fontWeight: 600,
-  background: "linear-gradient(90deg, #51a2ff 0%, #8ed6ff 100%)",
+  background:
+    theme.palette.mode === "dark"
+      ? "linear-gradient(90deg, #51a2ff 0%, #8ed6ff 100%)"
+      : `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${
+          theme.palette.primary.light
+        } 100%)`,
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
   letterSpacing: "0.5px",
@@ -31,6 +49,13 @@ const AppTitle = styled(Typography)(() => ({
 
 const HiddenInput = styled("input")(() => ({
   display: "none",
+}));
+
+const ThemeToggle = styled(Box)(() => ({
+  display: "flex",
+  alignItems: "center",
+  gap: 6,
+  marginLeft: 8,
 }));
 
 export interface ToolbarProps {
@@ -48,6 +73,8 @@ const Toolbar = forwardRef<HTMLButtonElement, ToolbarProps>(
   ) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const { t } = useTranslation();
+    const muiTheme = useTheme();
+    const { mode, toggleMode } = useThemeMode();
 
     return (
       <StyledAppBar position="static" elevation={0}>
@@ -108,6 +135,37 @@ const Toolbar = forwardRef<HTMLButtonElement, ToolbarProps>(
                 <DeleteIcon />
               </ToolbarIconButton>
             </div>
+          </Tooltip>
+          <Tooltip
+            title={mode === "dark" ? "Switch to day theme" : "Switch to dark theme"}
+            arrow
+          >
+            <ThemeToggle>
+              <LightModeIcon
+                fontSize="small"
+                sx={{
+                  color:
+                    mode === "day"
+                      ? muiTheme.palette.primary.main
+                      : muiTheme.palette.text.secondary,
+                }}
+              />
+              <Switch
+                checked={mode === "dark"}
+                onChange={toggleMode}
+                inputProps={{ "aria-label": "toggle theme" }}
+                size="small"
+              />
+              <DarkModeIcon
+                fontSize="small"
+                sx={{
+                  color:
+                    mode === "dark"
+                      ? muiTheme.palette.primary.main
+                      : muiTheme.palette.text.secondary,
+                }}
+              />
+            </ThemeToggle>
           </Tooltip>
           <PortalTarget id="toolbar-actions-after" />
         </MuiToolbar>
